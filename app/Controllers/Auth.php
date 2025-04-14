@@ -37,7 +37,7 @@ class Auth extends BaseController
                 ],
         ])){
             $username = $this->request->getPost('username');
-            $password = $this->request->getPost('password');
+            $password = sha1($this->request->getPost('password'));
             $cek = $this->ModelAuth->loginKaryawan($username,$password);
             if($cek){
                         session()->set('id_karyawan', $cek['id_karyawan']);
@@ -49,6 +49,9 @@ class Auth extends BaseController
                     session()->setFlashdata('pesan','Username  atau Password Salah');
                     return redirect()->to('Auth');
             }
+        }
+        else{
+            return redirect()->to('Auth')->withInput();
         }
     }
 
